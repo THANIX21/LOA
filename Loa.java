@@ -4,6 +4,7 @@ public class Loa {
 	// The size of the board
 	private static int [][] Board;
 	private static int size;
+	private static int player;
 
 	// The pieces
 	public static final int INVALID = -1;
@@ -39,10 +40,27 @@ public class Loa {
 
 		}
 
+		if(mode==0){
+
+
+
+		}
+
+		if(mode==1){
+
+
+
+		}
+
+		if(mode==2){
+
+
+
+		}
 
 	}
 
-
+int size = 8;
 /*System.out.println("Choose a board size between 4 and 16");
 		Scanner scanner = new Scanner(System.in);
     int params = new Integer(scanner.nextInt());
@@ -172,7 +190,7 @@ public class Loa {
 	 * row and column.
 	 */
 
-	/*public static int getPiece(int row, int col) {
+	public static int getPiece(int row, int col) {
 		if ((row < 0) || (row >= size)) {
 			return INVALID;
 		}
@@ -180,7 +198,7 @@ public class Loa {
 			return INVALID;
 		}
 		return board[row][col];
-	}*/
+	}
 
 	/*
 	 * Make a move. Check that the move is valid. If not, return false. If
@@ -190,7 +208,7 @@ public class Loa {
 	 * to (toRow, toCol).
 	 */
 
-	public static boolean makeMove(int player, int fromRow, int fromCol, int toRow, int toCol) {
+	public static boolean testMove(int player, int fromRow, int fromCol, int toRow, int toCol) {
 
 
 		while(fromCol>size){
