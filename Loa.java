@@ -82,7 +82,9 @@ int size = 8;
 
 			for (int i = 0; i < params; i++) {
 
-        if(((h==0)&&(i==0)) || ((h==params-1)&&(i==0)) || ((h==0)&&(i==params-1)) || ((h==params-1)&&(i==params-1))){
+        if(((h==0)&&(i==0)) || ((h==params-
+
+      System.out.println(" ");1)&&(i==0)) || ((h==0)&&(i==params-1)) || ((h==params-1)&&(i==params-1))){
 
           Board[h][i]= EMPTY;
 
