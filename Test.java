@@ -225,9 +225,11 @@ public class Test{
 
     }
 
-    if((fromCol!=toCol)&&(fromRow!=toRow)){
+    if((fromRow==toRow)&&(fromCol==toCol)){
 
-
+      System.out.println("ERROR: invalid move");
+      System.exit(0);
+      return false;
     }
 
     if(fromCol==toCol){
@@ -236,15 +238,34 @@ public class Test{
 
         for(int k = fromRow; k < size; k++){
 
-          if(Board[fromCol][k]!=0){
+          if(Board[fromRow][k]!=0){
 
-            if(Board[fromCol][k]==testplayer){
+            if(Board[fromRow][k]==testplayer){
 
               System.out.println("Jumped");
 
             }else{
 
-              System.out.println("ERROR: invalid move");
+              System.out.println("ERROR: invalid movegj");
+              System.exit(0);
+              return false;
+            }
+          }
+        }
+
+    }else{
+
+      for(int k = fromCol; k < size; k++){
+
+        if(Board[k][fromCol]!=0){
+
+          if(Board[k][fromCol]==testplayer){
+
+              System.out.println("Jumped");
+
+            }else{
+
+              System.out.println("ERROR: invalid moveg");
               System.exit(0);
               return false;
             }
@@ -252,11 +273,6 @@ public class Test{
         }
       }
     }
-
-
-
-
-
-		return true;
-	}
+return true;
+  }
 }
