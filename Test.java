@@ -117,7 +117,7 @@ public class Test{
 
             if(Board[size-fromCol-1][fromRow]!=testplayer){
 
-              System.out.println("ERROR: invalid move");
+              System.out.println("ERROR: invalid movea");
               System.exit(0);
 
             }else{
@@ -168,7 +168,7 @@ public class Test{
 
   				}else{
 
-  					System.out.println("ERROR: invalid move");
+  					System.out.println("ERROR: invalid moveb");
             System.exit(0);
 
   				}
@@ -193,34 +193,58 @@ public class Test{
   public static boolean testMove(int player, int fromRow, int fromCol, int toRow, int toCol) {
 
     int size = 8;
+    int countTRU = 0;
+
 
 		if(fromCol>size-1){
 
-			System.out.println("ERROR: invalid move");
+			System.out.println("ERROR: invalid move0");
       System.exit(0);
 			return false;
 		}
 
 	  if(fromRow>size-1){
 
-			System.out.println("ERROR: invalid move");
+			System.out.println("ERROR: invalid move1");
       System.exit(0);
       return false;
 		}
 
 		if(toCol>size-1){
 
-			System.out.println("ERROR: invalid move");
+			System.out.println("ERROR: invalid move2");
       System.exit(0);
       return false;
 		}
 
 		if(toRow>size-1){
 
-			System.out.println("ERROR: invalid move");
+			System.out.println("ERROR: invalid move3");
       System.exit(0);
       return false;
 		}
+
+    if((fromRow==toRow)&&(fromCol==toCol)){
+
+      System.out.println("ERROR: invalid move4");
+      System.exit(0);
+      return false;
+
+    }
+
+    if((fromCol!=toCol)&&(fromRow!=toRow)){
+
+      if(((Math.max(fromCol,toCol)) - (Math.min(fromCol,toCol)) >1 ) || ((Math.max(fromRow,toRow)) - (Math.min(fromRow,toRow)) >1 )){
+
+        System.out.println("ERROR: invalid move4");
+        System.exit(0);
+        return false;
+      }
+    }
+
+    //if()
+
+
 
 
 
