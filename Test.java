@@ -115,14 +115,14 @@ public class Test{
 
           if(testMove0(testplayer,fromRow,fromCol,toRow,toCol, Board)==true){
 
-            if(Board[size-fromRow-1][fromCol]!=testplayer){
+            if(Board[size-fromRow-1][fromCol]==testplayer){
 
-              System.out.println("ERROR: invalid move");
-              System.exit(0);
+              Board[size-toRow-1][toCol] = 2;
+              Board[size-fromRow-1][fromCol] = 0;
 
             }else{
 
-              Board[size-toRow-1][toCol] = 2;
+              Board[size-toRow-1][toCol] = 1;
               Board[size-fromRow-1][fromCol] = 0;
             }
 
