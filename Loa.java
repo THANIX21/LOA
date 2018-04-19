@@ -1,11 +1,12 @@
 import java.util.Scanner;
+
 public class Loa {
 
 	// The size of the board
 	private static int [][] Board;
 	private static int size;
 	private static int player;
-  private static boolean endgame;
+	private static char turn = 'B';
 	// The pieces
 	public static final int INVALID = -1;
 	public static final int EMPTY = 0;
@@ -16,60 +17,77 @@ public class Loa {
 	private static String[] Board_Display;
 	private static char[] alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
-	public static void main(String[]args){
+	//first turn to BLACK
+
+
+	public static void main(String[]args){//main method for base instructions on program
 
 		size = Integer.parseInt(args[0]);
 		int mode = Integer.parseInt(args[1]);
 
-		if(args.length<2){
+		if(args.length<2){// see if both the argusments have been supplied
 
 			System.out.println("ERROR: too few arguments");
 			System.exit(0);
 
 		}
-		if((size<4) || (size>16)){
+		if((size<4) || (size>16)){ // determine if size is between 4 and 16
 
 			System.out.println("ERROR: illegal size");
 			System.exit(0);
 
 		}
-		if((mode<0)||(mode>2)) {
+		if((mode<0)||(mode>2)) { //check to see if mode that was initialized is correct
 
 			System.out.println("ERROR: illegal mode");
 			System.exit(0);
 
 		}
 
-		if(mode==0){
+		if(mode==0){ //initialize testMode
 			testMode();
 		}
 
-		if(mode==1){
+		if(mode==1){ //initialize Single Player Mode
+			player = 2;
 			SPM();
 		}
 
-		if(mode==2){
+		if(mode==2){ //initialize Multi Player Mode
 			//MPM();
 		}
 
-	}
+	}//end main method
 
-	public static void SPM(){
+
+	public static void turn(){ //method to regulate turns
+
+		if(turn=='B'){
+			player = 1;
+			turn = 'W';
+		}else if(turn == 'W'){
+			turn = 'W';
+		  player = 2;
+			turn = 'B';
+		}
+	}// end
+
+	public static void SPM(){ // Single Player Mode start
 
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Choose a board size between 4 and 16");
-		int params = new Integer(scanner.nextInt());
+		int params = new Integer(scanner.nextInt()); //Receive parameters for the size of the board
 
 		 while ((params<4) || (params>16)){
 
 		    System.out.println("Invalid size, choose a board size between 4 and 16");
-		    params = new Integer(scanner.nextInt());
-
+		    params = new Integer(scanner.nextInt()); //retake parameters if they were not in range
+//make move after validation
 		 }
 
 		 System.out.println("To you want to play as white or black?");
 		 System.out.println("Enter 1/2");
-		 player = new Integer(scanner.nextInt());
+		 int player = Integer.parseInt(scanner.nextLine()); //determine player number
 		 boolean OT = false;
 
 		 while(OT = false){
@@ -134,7 +152,7 @@ public class Loa {
 
             for(int j = 0;j < params;j++){
 
-              switch (Board[params-k][j]){
+              switch (Board[params-k][j]){ //display int array of current board
 
                 case EMPTY : Board_Display[k] = Board_Display[k] + ". ";
                          break;
@@ -155,32 +173,32 @@ public class Loa {
 
 		String move;
 
-    while(endgame != true){
+    while(hasWon(player) != true){
 
 			System.out.println("Make your move");
 			Scanner scannerTM = new Scanner(System.in);
-			move = new String(scannerTM.nextLine());
+			move = new String(scannerTM.nextLine()); //receieve coordinates for movement
 
-      if(move.length()!=4){
+      while(move.length()!=4){
 
         System.out.println("Your input is too short");
-        System.exit(0);
+				move = new String(scannerTM.nextLine()); //check if coordinates are all given
 
-      }
+      }turn = 'B';
 
-			char[] letters = move.toCharArray();
+			char[] letters = move.toCharArray(); //store coordinates in char array to be able to split their values for movement on board
 
-      char cQ= letters[0];
-      char cU = letters[1];
-      char cI = letters[2];
-      char cT = letters[3];
+      char cQ = letters[0]; //test
+      char cU = letters[1]; //if user
+      char cI = letters[2]; //has
+      char cT = letters[3]; //entered quit
 
       int fromRow = (int) letters[0]-65;
       int fromCol= (int) letters[1]-65;
       int toRow = (int) letters[2]-65;
       int toCol = (int) letters[3]-65;
 
-      if(testQUIT(cQ,cU,cI,cT)==true){
+      if(testQUIT(cQ,cU,cI,cT)==true){ //quit checking function
 
 
         System.out.println("Player has left the game...");
@@ -190,16 +208,37 @@ public class Loa {
 
           if(testMove1(player,fromRow,fromCol,toRow,toCol, Board)==true){
 
-						//Board[params-fromRow-1][fromCol]
-            if((player==2)&&(Board[params-fromRow-1][fromCol]==2)){
+							if(turn=='B'){
 
-              Board[params-toRow-1][toCol] = 2;
-              Board[params-fromRow-1][fromCol] = 0;
+								if((player==2)&&(Board[params-fromRow-1][fromCol]==2)){ //make move after validation
 
-            }else{
+		              Board[params-toRow-1][toCol] = 2;
+		              Board[params-fromRow-1][fromCol] = 0;
+									turn();
 
-            	System.out.println(" ");
-            }
+		            }else{
+
+		            	System.out.println("You must move a black piece"); // make sure each user can only move its own piees
+									move = new String(scannerTM.nextLine());
+		            }
+							}
+
+							if(turn=='W'){
+								if((player==1)&&(Board[params-fromRow-1][fromCol]==1)){ //make move after validation
+
+	              	Board[params-toRow-1][toCol] = 1;
+	              	Board[params-fromRow-1][fromCol] = 0;
+									turn();
+
+	            	}else{
+
+	            		System.out.println("You must move a white piece piece");
+									move = new String(scannerTM.nextLine());
+	            	}
+							}
+
+						}
+
 
             System.out.println(" ");
 
@@ -232,39 +271,25 @@ public class Loa {
                         case BLACK : Board_Display[k] = Board_Display[k] + "B ";
                                  break;
 
+                        }
                       }
-                    }
-                  }
-                }
+								  	}
+                	}
                 System.out.println(Board_Display[k]);
               }
             System.out.println(" ");
+
+						if(hasWon(BLACK)==true){
+
+							System.out.println("WINNER: black");
+						}
+						if(hasWon(WHITE)==true){
+
+							System.out.println("WINNER: white");
   				}
         }
-      }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      }// singleplayer mode end
+		}
 
 
 
@@ -277,7 +302,7 @@ public class Loa {
     String input = "NQ";
     boolean endgame = false;
 
-    //standardize and initiate board numbers
+    //standardize and initiate board
     for (int h = 0; h < size; h++) {
 
       for (int i = 0; i < size; i++) {
@@ -340,7 +365,8 @@ public class Loa {
 
     System.out.println(" ");
 
-    while(endgame != true){
+    while(endgame != true){// ranges and situations are check and results are returned to the method that calls this one as a boolean
+
 
 			System.out.println("Make your move");
 			Scanner scannerTM = new Scanner(System.in);
@@ -361,7 +387,8 @@ public class Loa {
       char cT = letters[3];
 
       int fromRow = (int) letters[0]-65;
-      int fromCol= (int) letters[1]-65;
+    // ranges and situations are check and results are returned to the method that calls this one as a boolean
+  int fromCol= (int) letters[1]-65;
       int toRow = (int) letters[2]-65;
       int toCol = (int) letters[3]-65;
 
@@ -373,18 +400,32 @@ public class Loa {
 
       }else {
 
-          if(testMove0(player,fromRow,fromCol,toRow,toCol, Board)==true){
+          if(testMove0(testplayer,fromRow,fromCol,toRow,toCol, Board)==true){
 
-            if(Board[size-fromRow-1][fromCol]==player){
+						boolean go = false;
 
-              Board[size-toRow-1][toCol] = 2;
-              Board[size-fromRow-1][fromCol] = 0;
+						while(go==false){
 
-            }else{
+							if(Board[size-fromRow-1][fromCol]==2){
 
-              Board[size-toRow-1][toCol] = 1;
-              Board[size-fromRow-1][fromCol] = 0;
-            }
+		              Board[size-toRow-1][toCol] = 2;
+		              Board[size-fromRow-1][fromCol] = 0;
+									go = true;
+
+		            }else	if(Board[size-fromRow-1][fromCol]==1){
+
+		              Board[size-toRow-1][toCol] = 1;
+		              Board[size-fromRow-1][fromCol] = 0;
+									go = true;
+
+		            }else{
+
+		            	System.out.println("ERROR: invalid move");
+									System.exit(0);;
+		            }
+							}
+						}
+					}
 
             System.out.println(" ");
 
@@ -424,13 +465,22 @@ public class Loa {
                 System.out.println(Board_Display[k]);
               }
             System.out.println(" ");
+
+						if(hasWon(BLACK)==true){
+
+							System.out.println("WINNER: black");
+						}
+						if(hasWon(WHITE)==true){
+
+							System.out.println("WINNER: white");
+						}
   				}
         }
-      }
-    }
 
 
-  public static boolean testQUIT( char cQ, char cU, char cI, char cT) {
+
+
+  public static boolean testQUIT( char cQ, char cU, char cI, char cT) { //quitCheck
 
     if((cQ=='Q')&&(cU=='U')&&(cI=='I')&&(cT=='T')){
 
@@ -443,11 +493,10 @@ public class Loa {
 
   }
 
-  public static boolean testMove0(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) {
+  public static boolean testMove0(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) { // ranges and situations are check and results are returned to the method that calls this one as a boolean
 
     int size = 8;
     int testplayer = 2;
-
 
 		if(fromCol>size-1){
 
@@ -502,7 +551,7 @@ public class Loa {
 
             if(Board[fromRow][k]==testplayer){
 
-              System.out.println("Jumped");
+              //
 
             }else{
 
@@ -521,7 +570,7 @@ public class Loa {
 
           if(Board[k][fromCol]==testplayer){
 
-              System.out.println("Jumped");
+            	return true;
 
             }else{
 
@@ -535,12 +584,7 @@ public class Loa {
     }
 		return true;  }
 
-	/*
-	 * Function that returns the piece currently on the board at the specified
-	 * row and column.
-	 */
-
-	public static int getPiece(int row, int col) {
+	public static int getPiece(int row, int col) { // get piece's position from board at spesific point
 		if ((row < 0) || (row >= size)) {
 			return INVALID;
 		}
@@ -550,15 +594,7 @@ public class Loa {
 		return Board[row][col];
 	}
 
-	/*
-	 * Make a move. Check that the move is valid. If not, return false. If
-	 * valid, modify the board thSystem.out.println("Make your move");
-		Scanner scanner = new Scanner(System.in);
-    String move = new String(scanner.nextLine());at the piece has moved from (fromRow, fromCol)
-	 * to (toRow, toCol).
-	 */
-
-	 public static boolean testMove1(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) {
+	 public static boolean testMove1(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) { // ranges and situations are check and results are returned to the method that calls this one as a boolean
 
 	 	int size = 8;
 	 	int testplayer = 2;
@@ -605,7 +641,7 @@ public class Loa {
 
 	 					if(Board[fromRow][k]==testplayer){
 
-	 						System.out.println("Jumped");
+	 						return true;
 
 	 					}else{
 
@@ -624,7 +660,7 @@ public class Loa {
 
 	 				if(Board[k][fromCol]==player){
 
-	 						System.out.println("Jumped");
+	 						return true;
 
 	 					}else{
 
@@ -638,63 +674,39 @@ public class Loa {
 	 	}
 	 	return true;  }
 
-	/*
-	 * Return the size of the board.
-	 */
-
 	public static int getSize() {
 		return size;
 	}
 
-	/*
-	 * Count the number of markers (non-empty squares) in the specified row.
-	 */
-
 
 
 	public static int rowCount(int row) {
-		/*--------------------------------------------
-		 * FILL IN THE CODE FOR COUNTING THE MARKER IN A ROW
-		 *-------------------------------------------*/
-		return 0;
-	}
+     int inRow = 0;
 
-	/*
-	 * Count the number of markers (non-empty squares) in the specified column.
-	 */
+		 	for(int k = 0; k < size; k++){
+
+         if( (getPiece(row,k) == BLACK) || (getPiece(row,k) == WHITE) ){
+
+            inRow = inRow + 1;
+
+         }
+     }
+  return inRow;
+ }
+
 	public static int colCount(int col) {
-		/*--------------------------------------------
-		 * FILL IN THE CODE FOR COUNTING THE MARKER IN A COLUMN
-		 *-------------------------------------------*/
 		return 0;
 	}
-
-	/*
-	 * Count the number of markers (non-empty squares) in the diagonal that runs
-	 * from the north-east corner to the south-west corner of the board, and
-	 * that passes through the specified row and column.
-	 */
 	public static int diagNortheastCount(int row, int col) {
-		/*--------------------------------------------
-		 * FILL IN THE CODE FOR COUNTING THE MARKER IN A DIAGONAL
-		 *-------------------------------------------*/
 		return 0;
 	}
 
-	/*
-	 * Count the number of markers (non-empty squares) in the diagonal that runs
-	 * from the north-west corner to the south-east corner of the board, and
-	 * that passes through the specified row and column.
-	 */
 	public static int diagNorthwestCount(int row, int col) {
-		/*--------------------------------------------
-		 * FILL IN THE CODE FOR COUNTING THE MARKER IN A DIAGONAL
-		 *-------------------------------------------*/
+
 		return 0;
 	}
 
-	/*public static boolean hasWon(int player) {
-		return Util.isConnected(board, player);
-	}*/
-
+	public static boolean hasWon(int player) {
+		return Util.isConnected(Board, player);
+	}
 }
