@@ -100,10 +100,10 @@ public class Test{
       char cI = letters[2];
       char cT = letters[3];
 
-      int fromCol = (int) letters[0]-65;
-      int fromRow = (int) letters[1]-65;
-      int toCol = (int) letters[2]-65;
-      int toRow = (int) letters[3]-65;
+      int fromRow = (int) letters[0]-65;
+      int fromCol= (int) letters[1]-65;
+      int toRow = (int) letters[2]-65;
+      int toCol = (int) letters[3]-65;
 
       if(testQUIT(cQ,cU,cI,cT)==true){
 
@@ -113,17 +113,17 @@ public class Test{
 
       }else {
 
-          if(testMove(testplayer,fromRow,fromCol,toRow,toCol)==true){
+          if(testMove0(testplayer,fromRow,fromCol,toRow,toCol, Board)==true){
 
-            if(Board[size-fromCol-1][fromRow]!=testplayer){
+            if(Board[size-fromRow-1][fromCol]!=testplayer){
 
-              System.out.println("ERROR: invalid movea");
+              System.out.println("ERROR: invalid move");
               System.exit(0);
 
             }else{
 
-              Board[size-toCol-1][toRow] = 2;
-              Board[size-fromCol-1][fromRow] = 0;
+              Board[size-toRow-1][toCol] = 2;
+              Board[size-fromRow-1][fromCol] = 0;
             }
 
             System.out.println(" ");
@@ -161,16 +161,9 @@ public class Test{
                     }
                   }
                 }
-              System.out.println(Board_Display[k]);
-            }
+                System.out.println(Board_Display[k]);
+              }
             System.out.println(" ");
-
-
-  				}else{
-
-  					System.out.println("ERROR: invalid moveb");
-            System.exit(0);
-
   				}
         }
       }
@@ -190,43 +183,43 @@ public class Test{
 
   }
 
-  public static boolean testMove(int player, int fromRow, int fromCol, int toRow, int toCol) {
+  public static boolean testMove0(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) {
 
     int size = 8;
-    int countTRU = 0;
+    int testplayer = 2;
 
 
 		if(fromCol>size-1){
 
-			System.out.println("ERROR: invalid move0");
+			System.out.println("ERROR: invalid move");
       System.exit(0);
 			return false;
 		}
 
 	  if(fromRow>size-1){
 
-			System.out.println("ERROR: invalid move1");
+			System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 		}
 
 		if(toCol>size-1){
 
-			System.out.println("ERROR: invalid move2");
+			System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 		}
 
 		if(toRow>size-1){
 
-			System.out.println("ERROR: invalid move3");
+			System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 		}
 
     if((fromRow==toRow)&&(fromCol==toCol)){
 
-      System.out.println("ERROR: invalid move4");
+      System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 
@@ -234,15 +227,31 @@ public class Test{
 
     if((fromCol!=toCol)&&(fromRow!=toRow)){
 
-      if(((Math.max(fromCol,toCol)) - (Math.min(fromCol,toCol)) >1 ) || ((Math.max(fromRow,toRow)) - (Math.min(fromRow,toRow)) >1 )){
 
-        System.out.println("ERROR: invalid move4");
-        System.exit(0);
-        return false;
-      }
     }
 
-    //if()
+    if(fromCol==toCol){
+
+      if(fromRow<toRow){
+
+        for(int k = fromRow; k < size; k++){
+
+          if(Board[fromCol][k]!=0){
+
+            if(Board[fromCol][k]==testplayer){
+
+              System.out.println("Jumped");
+
+            }else{
+
+              System.out.println("ERROR: invalid move");
+              System.exit(0);
+              return false;
+            }
+          }
+        }
+      }
+    }
 
 
 
