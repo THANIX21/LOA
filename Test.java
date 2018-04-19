@@ -10,8 +10,75 @@ public class Test{
 
   public static void main(String[]args){
 
+    int testplayer = 2;
+    int size = 8;
+    String Board_Display[] = new String[size+1];
+    int Board[][] = new int [size][size];
     String input = "NQ";
     boolean endgame = false;
+
+    //standardize and initiate board numbers
+    for (int h = 0; h < size; h++) {
+
+      for (int i = 0; i < size; i++) {
+
+        if(((h==0)&&(i==0)) || ((h==size-1)&&(i==0)) || ((h==0)&&(i==size-1)) || ((h==size-1)&&(i==size-1))){
+
+          Board[h][i]= EMPTY;
+
+        }else if((h==0) || (h==size-1)){
+
+          Board[h][i] = BLACK;
+
+        }else if((i==0) || (i==size-1)){
+
+          Board[h][i] = WHITE;
+
+        }
+      }
+    } // end of board initialization
+
+    System.out.println(" ");
+
+    //display initial board
+    for (int k = 0; k < size+1 ; k++) {
+
+       for (int p = 0; p < size+1; p++) {
+
+          if ((k==0)&&(p==0)){
+
+            Board_Display[k] = " ";
+
+          }else if(k==0){
+
+            Board_Display[k] = Board_Display[k] + " "+ alph[p-1];
+
+          }
+
+          if(k>0){
+
+            Board_Display[k] = String.valueOf(alph[size - k])+ " ";
+
+            for(int j = 0;j < size;j++){
+
+              switch (Board[size-k][j]){
+
+                case EMPTY : Board_Display[k] = Board_Display[k] + ". ";
+                         break;
+                case WHITE : Board_Display[k] = Board_Display[k] + "W ";
+                         break;
+                case BLACK : Board_Display[k] = Board_Display[k] + "B ";
+                         break;
+
+              }
+            }
+          }
+        }
+      System.out.println(Board_Display[k]);
+    }// end of display initialization
+
+
+    System.out.println(" ");
 
     while(endgame != true){
 
@@ -46,32 +113,17 @@ public class Test{
 
       }else {
 
-          if(testMove(1,fromRow,fromCol,toRow,toCol)==true){
+          if(testMove(testplayer,fromRow,fromCol,toRow,toCol)==true){
 
-            int size = 8;
+            if(Board[size-fromCol-1][fromRow]!=testplayer){
 
-            String Board_Display[] = new String[size+1];
-            int Board[][] = new int [size][size];
+              System.out.println("ERROR: invalid move");
+              System.exit(0);
 
+            }else{
 
-            for (int h = 0; h < size; h++) {
-
-        			for (int i = 0; i < size; i++) {
-
-                if(((h==0)&&(i==0)) || ((h==size-1)&&(i==0)) || ((h==0)&&(i==size-1)) || ((h==size-1)&&(i==size-1))){
-
-                  Board[h][i]= EMPTY;
-
-                }else if((h==0) || (h==size-1)){
-
-                  Board[h][i] = BLACK;
-
-                }else if((i==0) || (i==size-1)){
-
-                  Board[h][i] = WHITE;
-
-                }
-              }
+              Board[size-toCol-1][toRow] = 2;
+              Board[size-fromCol-1][fromRow] = 0;
             }
 
             System.out.println(" ");
@@ -142,33 +194,35 @@ public class Test{
 
     int size = 8;
 
-		while(fromCol>size-1){
+		if(fromCol>size-1){
 
 			System.out.println("ERROR: invalid move");
       System.exit(0);
 			return false;
 		}
 
-		while(fromRow>size-1){
+	  if(fromRow>size-1){
 
 			System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 		}
 
-		while(toCol>size-1){
+		if(toCol>size-1){
 
 			System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 		}
 
-		while(toRow>size-1){
+		if(toRow>size-1){
 
 			System.out.println("ERROR: invalid move");
       System.exit(0);
       return false;
 		}
+
+
 
 		return true;
 	}
