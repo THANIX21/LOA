@@ -5,7 +5,7 @@ public class Loa {
 	private static int [][] Board;
 	private static int size;
 	private static int player;
-
+  private static boolean endgame;
 	// The pieces
 	public static final int INVALID = -1;
 	public static final int EMPTY = 0;
@@ -41,43 +41,61 @@ public class Loa {
 		}
 
 		if(mode==0){
-
+			testMode();
 		}
 
 		if(mode==1){
-
+			SPM();
 		}
 
 		if(mode==2){
-
+			//MPM();
 		}
 
 	}
 
-/*System.out.println("Choose a board size between 4 and 16");
+	public static void SPM(){
+
 		Scanner scanner = new Scanner(System.in);
-    int params = new Integer(scanner.nextInt());
+		System.out.println("Choose a board size between 4 and 16");
+		int params = new Integer(scanner.nextInt());
 
-		size = params;
+		 while ((params<4) || (params>16)){
 
-     while ((params<4) || (params>16)){
+		    System.out.println("Invalid size, choose a board size between 4 and 16");
+		    params = new Integer(scanner.nextInt());
 
-       System.out.println("Invalid size, choose a board size between 4 and 16");
-       params = new Integer(scanner.nextInt());
+		 }
 
-     }
+		 System.out.println("To you want to play as white or black?");
+		 System.out.println("Enter 1/2");
+		 player = new Integer(scanner.nextInt());
+		 boolean OT = false;
 
-    String Board_Display[] = new String[params+1];
-    int Board[][] = new int [params][params];
+		 while(OT = false){
 
+			 if(player==1){
 
+				 OT = true;
+			 }else if (player==2){
+
+				 OT = true;
+			 }else{
+
+				 System.out.println("Invalid input: Enter 1 or 2");
+				 player = new Integer(scanner.nextInt());
+			 }
+		 }
+
+		String Board_Display[] = new String[params+1];
+		int Board[][] = new int [params][params];
+
+    //standardize and initiate board numbers
     for (int h = 0; h < params; h++) {
 
-			for (int i = 0; i < params; i++) {
+      for (int i = 0; i < params; i++) {
 
-        if(((h==0)&&(i==0)) || ((h==params-
-
-      System.out.println(" ");1)&&(i==0)) || ((h==0)&&(i==params-1)) || ((h==params-1)&&(i==params-1))){
+        if(((h==0)&&(i==0)) || ((h==params-1)&&(i==0)) || ((h==0)&&(i==params-1)) || ((h==params-1)&&(i==params-1))){
 
           Board[h][i]= EMPTY;
 
@@ -91,13 +109,14 @@ public class Loa {
 
         }
       }
-    }
+    } // end of board initialization
 
-		System.out.println(" ");
+    System.out.println(" ");
 
-    for (int k = 0; k < params+1; k++) {
+    //display initial board
+    for (int k = 0; k < params+1 ; k++) {
 
-			 for (int p = 0; p < params+1; p++) {
+       for (int p = 0; p < params+1; p++) {
 
           if ((k==0)&&(p==0)){
 
@@ -113,9 +132,9 @@ public class Loa {
 
             Board_Display[k] = String.valueOf(alph[params - k])+ " ";
 
-            for(int j=0;j<params;j++){
+            for(int j = 0;j < params;j++){
 
-              switch (Board[k-1][j]){
+              switch (Board[params-k][j]){
 
                 case EMPTY : Board_Display[k] = Board_Display[k] + ". ";
                          break;
@@ -128,57 +147,395 @@ public class Loa {
             }
           }
         }
-
       System.out.println(Board_Display[k]);
-
-    }
-		moveInput();
-*/
+    }// end of display initialization
 
 
+    System.out.println(" ");
 
-	public static void moveInput(){
+		String move;
 
-		boolean valid;
-		valid = false;
+    while(endgame != true){
 
-		while(valid == false){
-
-			System.out.println(" ");
 			System.out.println("Make your move");
-			Scanner scannerMI = new Scanner(System.in);
-			String move = new String(scannerMI.nextLine());
-			move = move.toUpperCase();
+			Scanner scannerTM = new Scanner(System.in);
+			move = new String(scannerTM.nextLine());
+
+      if(move.length()!=4){
+
+        System.out.println("Your input is too short");
+        System.exit(0);
+
+      }
+
 			char[] letters = move.toCharArray();
 
-			//if
+      char cQ= letters[0];
+      char cU = letters[1];
+      char cI = letters[2];
+      char cT = letters[3];
 
-			if(move.length()!=4){
+      int fromRow = (int) letters[0]-65;
+      int fromCol= (int) letters[1]-65;
+      int toRow = (int) letters[2]-65;
+      int toCol = (int) letters[3]-65;
 
-				valid = false;
-				System.out.println("Invalid number of coordinates");
+      if(testQUIT(cQ,cU,cI,cT)==true){
 
-			}else{
 
-				int fromCol = (int) letters[0]-65;
-				int fromRow = (int) letters[1]-65;
-				int toCol = (int) letters[2]-65;
-				int toRow = (int) letters[3]-65;
+        System.out.println("Player has left the game...");
+        System.exit(0);
 
-				if(testMove(1,fromRow,fromCol,toRow,toCol)==true){
+      }else {
 
-					valid = true;
+          if(testMove1(player,fromRow,fromCol,toRow,toCol, Board)==true){
 
-				}else{
+						//Board[params-fromRow-1][fromCol]
+            if((player==2)&&(Board[params-fromRow-1][fromCol]==2)){
 
-					valid = false;
+              Board[params-toRow-1][toCol] = 2;
+              Board[params-fromRow-1][fromCol] = 0;
 
-				}
-			}
-		}
+            }else{
+
+            	System.out.println(" ");
+            }
+
+            System.out.println(" ");
+
+            for (int k = 0; k < params+1; k++) {
+
+        			 for (int p = 0; p < params+1; p++) {
+
+                  if ((k==0)&&(p==0)){
+
+                    Board_Display[k] = " ";
+
+                  }else if(k==0){
+
+                    Board_Display[k] = Board_Display[k] + " "+ alph[p-1];
+
+                  }
+
+                  if(k>0){
+
+                    Board_Display[k] = String.valueOf(alph[params - k])+ " ";
+
+                    for(int j=0;j<params;j++){
+
+                      switch (Board[k-1][j]){
+
+                        case EMPTY : Board_Display[k] = Board_Display[k] + ". ";
+                                 break;
+                        case WHITE : Board_Display[k] = Board_Display[k] + "W ";
+                                 break;
+                        case BLACK : Board_Display[k] = Board_Display[k] + "B ";
+                                 break;
+
+                      }
+                    }
+                  }
+                }
+                System.out.println(Board_Display[k]);
+              }
+            System.out.println(" ");
+  				}
+        }
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public static void testMode(){
+
+    int testplayer = 2;
+    int size = 8;
+    String Board_Display[] = new String[size+1];
+    int Board[][] = new int [size][size];
+    String input = "NQ";
+    boolean endgame = false;
+
+    //standardize and initiate board numbers
+    for (int h = 0; h < size; h++) {
+
+      for (int i = 0; i < size; i++) {
+
+        if(((h==0)&&(i==0)) || ((h==size-1)&&(i==0)) || ((h==0)&&(i==size-1)) || ((h==size-1)&&(i==size-1))){
+
+          Board[h][i]= EMPTY;
+
+        }else if((h==0) || (h==size-1)){
+
+          Board[h][i] = BLACK;
+
+        }else if((i==0) || (i==size-1)){
+
+          Board[h][i] = WHITE;
+
+        }
+      }
+    } // end of board initialization
+
+    System.out.println(" ");
+
+    //display initial board
+    for (int k = 0; k < size+1 ; k++) {
+
+       for (int p = 0; p < size+1; p++) {
+
+          if ((k==0)&&(p==0)){
+
+            Board_Display[k] = " ";
+
+          }else if(k==0){
+
+            Board_Display[k] = Board_Display[k] + " "+ alph[p-1];
+
+          }
+
+          if(k>0){
+
+            Board_Display[k] = String.valueOf(alph[size - k])+ " ";
+
+            for(int j = 0;j < size;j++){
+
+              switch (Board[size-k][j]){
+
+                case EMPTY : Board_Display[k] = Board_Display[k] + ". ";
+                         break;
+                case WHITE : Board_Display[k] = Board_Display[k] + "W ";
+                         break;
+                case BLACK : Board_Display[k] = Board_Display[k] + "B ";
+                         break;
+
+              }
+            }
+          }
+        }
+      System.out.println(Board_Display[k]);
+    }// end of display initialization
+
+
+    System.out.println(" ");
+
+    while(endgame != true){
+
+			System.out.println("Make your move");
+			Scanner scannerTM = new Scanner(System.in);
+			input = new String(scannerTM.nextLine());
+
+      if(input.length()!=4){
+
+        System.out.println("ERROR: invalid move");
+        System.exit(0);
+
+      }
+
+			char[] letters = input.toCharArray();
+
+      char cQ= letters[0];
+      char cU = letters[1];
+      char cI = letters[2];
+      char cT = letters[3];
+
+      int fromRow = (int) letters[0]-65;
+      int fromCol= (int) letters[1]-65;
+      int toRow = (int) letters[2]-65;
+      int toCol = (int) letters[3]-65;
+
+      if(testQUIT(cQ,cU,cI,cT)==true){
+
+
+        System.out.println("player quit");
+        System.exit(0);
+
+      }else {
+
+          if(testMove0(player,fromRow,fromCol,toRow,toCol, Board)==true){
+
+            if(Board[size-fromRow-1][fromCol]==player){
+
+              Board[size-toRow-1][toCol] = 2;
+              Board[size-fromRow-1][fromCol] = 0;
+
+            }else{
+
+              Board[size-toRow-1][toCol] = 1;
+              Board[size-fromRow-1][fromCol] = 0;
+            }
+
+            System.out.println(" ");
+
+            for (int k = 0; k < size+1; k++) {
+
+        			 for (int p = 0; p < size+1; p++) {
+
+                  if ((k==0)&&(p==0)){
+
+                    Board_Display[k] = " ";
+
+                  }else if(k==0){
+
+                    Board_Display[k] = Board_Display[k] + " "+ alph[p-1];
+
+                  }
+
+                  if(k>0){
+
+                    Board_Display[k] = String.valueOf(alph[size - k])+ " ";
+
+                    for(int j=0;j<size;j++){
+
+                      switch (Board[k-1][j]){
+
+                        case EMPTY : Board_Display[k] = Board_Display[k] + ". ";
+                                 break;
+                        case WHITE : Board_Display[k] = Board_Display[k] + "W ";
+                                 break;
+                        case BLACK : Board_Display[k] = Board_Display[k] + "B ";
+                                 break;
+
+                      }
+                    }
+                  }
+                }
+                System.out.println(Board_Display[k]);
+              }
+            System.out.println(" ");
+  				}
+        }
+      }
+    }
+
+
+  public static boolean testQUIT( char cQ, char cU, char cI, char cT) {
+
+    if((cQ=='Q')&&(cU=='U')&&(cI=='I')&&(cT=='T')){
+
+      return true;
+
+    }else{
+
+      return false;
+    }
+
   }
 
-	/*int size = 8;
+  public static boolean testMove0(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) {
+
+    int size = 8;
+    int testplayer = 2;
+
+
+		if(fromCol>size-1){
+
+			System.out.println("ERROR: invalid move");
+      System.exit(0);
+			return false;
+		}
+
+	  if(fromRow>size-1){
+
+			System.out.println("ERROR: invalid move");
+      System.exit(0);
+      return false;
+		}
+
+		if(toCol>size-1){
+
+			System.out.println("ERROR: invalid move");
+      System.exit(0);
+      return false;
+		}
+
+		if(toRow>size-1){
+
+			System.out.println("ERROR: invalid move");
+      System.exit(0);
+      return false;
+		}
+
+    if((fromRow==toRow)&&(fromCol==toCol)){
+
+      System.out.println("ERROR: invalid move");
+      System.exit(0);
+      return false;
+
+    }
+
+    if((fromRow==toRow)&&(fromCol==toCol)){
+
+      System.out.println("ERROR: invalid move");
+      System.exit(0);
+      return false;
+    }
+
+    if(fromCol==toCol){
+
+      if(fromRow<toRow){
+
+        for(int k = fromRow; k < size; k++){
+
+          if(Board[fromRow][k]!=0){
+
+            if(Board[fromRow][k]==testplayer){
+
+              System.out.println("Jumped");
+
+            }else{
+
+              System.out.println("ERROR: invalid move");
+              System.exit(0);
+              return false;
+            }
+          }
+        }
+
+    }else{
+
+      for(int k = fromCol; k < size; k++){
+
+        if(Board[k][fromCol]!=0){
+
+          if(Board[k][fromCol]==testplayer){
+
+              System.out.println("Jumped");
+
+            }else{
+
+              System.out.println("ERROR: invalid move");
+              System.exit(0);
+              return false;
+            }
+          }
+        }
+      }
+    }
+		return true;  }
+
+	/*
 	 * Function that returns the piece currently on the board at the specified
 	 * row and column.
 	 */
@@ -190,7 +547,7 @@ public class Loa {
 		if ((col < 0) || (col >= size)) {
 			return INVALID;
 		}
-		return board[row][col];
+		return Board[row][col];
 	}
 
 	/*
@@ -201,39 +558,85 @@ public class Loa {
 	 * to (toRow, toCol).
 	 */
 
-	public static boolean testMove(int player, int fromRow, int fromCol, int toRow, int toCol) {
+	 public static boolean testMove1(int player, int fromRow, int fromCol, int toRow, int toCol ,int Board[][]) {
+
+	 	int size = 8;
+	 	int testplayer = 2;
 
 
-		while(fromCol>size){
+	 	if(fromCol>size-1){
 
-			System.out.println("Your starting vertical coodirnate is too large.");
-			return false;
+	 		System.out.println("Your starting coordinates have values that exceed the limit of coloumns on the board");
+	 		return false;
+	 	}
 
-		}
+	 	if(fromRow>size-1){
 
-		while(fromRow>size){
+	 		System.out.println("Your starting coordinates have values that exceed the limit of rows on the board");
+	 		return false;
+	 	}
 
-			System.out.println("Your starting horizontal coodirnate is too large.");
-			return false;
+	 	if(toCol>size-1){
 
-		}
+	 		System.out.println("Your destination coordinates have values that exceed the limit of coloumns on the board");
+	 		return false;
+	 	}
 
-		while(toCol>size){
+	 	if(toRow>size-1){
 
-			System.out.println("Your target vertical coodirnate is too large.");
-			return false;
+	 		System.out.println("Your destination coordinates have values that exceed the limit of rows on the board");
+	 		return false;
+	 	}
 
-		}
+	 	if((fromRow==toRow)&&(fromCol==toCol)){
 
-		while(toRow>size){
+	 		System.out.println("You cannot move to the same spot");
+	 		return false;
 
-			System.out.println("Your target horizontal coodirnate is too large.");
-			return false;
+	 	}
 
-		}
+	 	if(fromCol==toCol){
 
-		return true;
-	}
+	 		if(fromRow<toRow){
+
+	 			for(int k = fromRow; k < size; k++){
+
+	 				if(Board[fromRow][k]!=0){
+
+	 					if(Board[fromRow][k]==testplayer){
+
+	 						System.out.println("Jumped");
+
+	 					}else{
+
+	 						System.out.println("You cannot jump over an enemy piece");
+	 						System.exit(0);
+	 						return false;
+	 					}
+	 				}
+	 			}
+
+	 	}else{
+
+	 		for(int k = fromCol; k < size; k++){
+
+	 			if(Board[k][fromCol]!=0){
+
+	 				if(Board[k][fromCol]==player){
+
+	 						System.out.println("Jumped");
+
+	 					}else{
+
+	 						System.out.println("You cannot jump over an enemy piece");
+	 						System.exit(0);
+	 						return false;
+	 					}
+	 				}
+	 			}
+	 		}
+	 	}
+	 	return true;  }
 
 	/*
 	 * Return the size of the board.
