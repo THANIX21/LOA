@@ -42,25 +42,18 @@ public class Loa {
 
 		if(mode==0){
 
-
-
 		}
 
 		if(mode==1){
-
-
 
 		}
 
 		if(mode==2){
 
-
-
 		}
 
 	}
 
-int size = 8;
 /*System.out.println("Choose a board size between 4 and 16");
 		Scanner scanner = new Scanner(System.in);
     int params = new Integer(scanner.nextInt());
@@ -172,22 +165,20 @@ int size = 8;
 				int toCol = (int) letters[2]-65;
 				int toRow = (int) letters[3]-65;
 
-				if(makeMove(1,fromRow,fromCol,toRow,toCol)==true){
+				if(testMove(1,fromRow,fromCol,toRow,toCol)==true){
 
-					valid = true;
-					System.out.println("Valid");
+					valid = true;					
 
 				}else{
 
 					valid = false;
-					System.out.println("Invalid");
 
 				}
 			}
 		}
   }
 
-	/*
+	/*int size = 8;
 	 * Function that returns the piece currently on the board at the specified
 	 * row and column.
 	 */
