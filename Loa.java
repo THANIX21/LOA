@@ -82,12 +82,11 @@ public class Loa {
 
 		    System.out.println("Invalid size, choose a board size between 4 and 16");
 		    params = new Integer(scanner.nextInt()); //retake parameters if they were not in range
-//make move after validation
 		 }
 
 		 System.out.println("To you want to play as white or black?");
 		 System.out.println("Enter 1/2");
-		 int player = Integer.parseInt(scanner.nextLine()); //determine player number
+		 int player = new Integer(scanner.nextInt()); //determine player number
 		 boolean OT = false;
 
 		 while(OT = false){
