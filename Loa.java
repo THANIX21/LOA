@@ -167,7 +167,7 @@ public class Loa {
 
 				if(testMove(1,fromRow,fromCol,toRow,toCol)==true){
 
-					valid = true;					
+					valid = true;
 
 				}else{
 
@@ -241,27 +241,6 @@ public class Loa {
 
 	public static int getSize() {
 		return size;
-	}
-
-	/*
-	 * Check if the given move is valid.  This entails checking that:
-	 *
-	 * - the player is valid
-	 *
-	 * - (fromRow, fromCol) is a valid coordinate
-	 *
-	 * - (toRow, toCol) is a valid coordinate
-	 *
-	 * - the from square contains a marker that belongs to the player
-	 *
-	 * - check that we are moving a "legal" number of squares
-	 */
-
-	public static boolean isValidMove(int player, int fromRow, int fromCol, int toRow, int toCol) {
-		/*--------------------------------------------
-		 * FILL IN THE CODE FOR CHECKING A MOVE
-		 *-------------------------------------------*/
-		return false;
 	}
 
 	/*
